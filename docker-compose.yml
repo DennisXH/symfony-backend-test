@@ -1,0 +1,28 @@
+version: '3.5'
+services:
+  app:
+    build: .
+    working_dir: /var/www/app
+    volumes:
+      - .:/var/www/app
+    entrypoint: php -S localhost:8000;
+    ports:
+      - "8000:8000"
+    networks:
+      - app-network
+  mysql:
+    image: mysql:5.7
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+    volumes:
+      - mysqldata:/var/lib/mysql
+    networks:
+      - app-network
+#Docker Networks
+networks:
+  app-network:
+    driver: bridge
+volumes:
+  mysqldata:
