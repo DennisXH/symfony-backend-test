@@ -5,7 +5,7 @@ services:
     working_dir: /var/www/app
     volumes:
       - .:/var/www/app
-    entrypoint: php -S localhost:8000;
+    entrypoint: php -S 0.0.0.0:8000;
     ports:
       - "8000:8000"
     networks:
