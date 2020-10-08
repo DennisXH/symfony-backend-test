@@ -6,7 +6,7 @@ use App\Entity\User;
 use App\Repositories\SessionRepository;
 use Doctrine\ORM\EntityManager;
 
-final class UserService
+class UserService
 {
     public function createNewSession(User $user, $expiredInDay = 7): Session
     {
@@ -23,7 +23,7 @@ final class UserService
         return $session;
     }
 
-    public function getCurrentSession(EntityManager $em, User $user)
+    public function getCurrentSession($em, User $user)
     {
         //find and return non expired session
         /** @var SessionRepository $sessionRepository */

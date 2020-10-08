@@ -24,7 +24,7 @@ class UsersController extends BaseController
 
         /** @var User $user */
         $user = $search[0];
-        if (!password_verify(hash_hmac("sha256", $password, $_ENV['USER_PASSWORD_SECRET']), $user->getPassword())) {
+        if (!$this->passwordVerify($password, $user->getPassword())) {
             return $this->unauthorizedRequest();
         }
 
@@ -99,5 +99,10 @@ class UsersController extends BaseController
     {
         $pwd_peppered = hash_hmac("sha256", $password, $_ENV['USER_PASSWORD_SECRET']);
         return password_hash($pwd_peppered, PASSWORD_BCRYPT);
+    }
+
+    protected function passwordVerify($password, $hashPassword)
+    {
+        return password_verify(hash_hmac("sha256", $password, $_ENV['USER_PASSWORD_SECRET']), $hashPassword);
     }
 }

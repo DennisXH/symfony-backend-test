@@ -121,7 +121,9 @@ final class Versions
   'webmozart/assert' => '1.9.1@bafc69caeb4d49c39fd0779086c03a3738cbb389',
   'zendframework/zend-code' => '3.4.1@268040548f92c2bfcba164421c1add2ba43abaaa',
   'zendframework/zend-eventmanager' => '3.2.1@a5e2583a211f73604691586b8406ff7296a946dd',
-  '__root__' => 'dev-master@1796d4dc05be1926c5a1814ae0a84f166d921469',
+  'hamcrest/hamcrest-php' => 'v2.0.1@8c3d0a3f6af734494ad8f6fbbee0ba92422859f3',
+  'mockery/mockery' => '1.4.2@20cab678faed06fac225193be281ea0fddb43b93',
+  '__root__' => 'dev-master@e26cf20f5bc60ceed25d029273685b4fab98fe85',
 );
 
     private function __construct()

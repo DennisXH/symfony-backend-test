@@ -7,4 +7,5 @@ $baseDir = dirname($vendorDir);
 
 return array(
     'ProxyManager\\' => array($vendorDir . '/ocramius/proxy-manager/src'),
+    'Mockery' => array($vendorDir . '/mockery/mockery/library'),
 );
