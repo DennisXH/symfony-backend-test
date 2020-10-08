@@ -14,7 +14,7 @@ class Session
      */
     protected $token;
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="integer")
      */
     protected $user_id;
     /**

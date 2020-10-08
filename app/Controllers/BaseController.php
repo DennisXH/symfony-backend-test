@@ -12,6 +12,7 @@ class BaseController
     protected $user           = null;
     protected $route          = [];
     protected $sessionToken   = '';
+    /** @var EntityManager */
     protected $entityManager;
 
     public function __construct($route)
@@ -23,7 +24,7 @@ class BaseController
 
     public function startApp()
     {
-        $this->sessionToken = $_SERVER['HTTP_AUTHENTICATION'] ?? '';
+        $this->sessionToken = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
     }
 
     public function unauthorizedRequest()
