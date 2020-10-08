@@ -26,6 +26,23 @@ class BaseController
         $this->sessionToken = $_SERVER['HTTP_AUTHENTICATION'] ?? '';
     }
 
+    public function unauthorizedRequest()
+    {
+        return [
+            'http_code' => 'unauthorized',
+            'message'   => 'unauthorized',
+            'success'   => false
+        ];
+    }
+
+    public function notFoundRequest()
+    {
+        return [
+            'http_code' => 'not_found',
+            'message'   => 'not_found',
+            'success'   => false
+        ];
+    }
     public function badRequest(string $message = '')
     {
         $message = $message ?: 'Generic error.';

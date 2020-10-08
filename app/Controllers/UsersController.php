@@ -14,18 +14,40 @@ class UsersController extends BaseController
 
     public function loginAction()
     {
-        $email    = $this->post['email'];
+        $email = $this->post['email'];
         $password = $this->post['password'];
+        $search = $this->entityManager->getRepository(User::class)->findBy(['email' => $email]);
 
-        // your code goes here
+        if (empty($search)) {
+            return $this->notFoundRequest();
+        }
+
+        /** @var User $user */
+        $user = $search[0];
+        if (!password_verify(hash_hmac("sha256", $password, $_ENV['USER_PASSWORD_SECRET']), $user->getPassword())) {
+            return $this->unauthorizedRequest();
+        }
+
+        $service = new UserService();
+        try {
+            $session = $service->getCurrentSession($this->entityManager, $user);
+        } catch (\Exception $e) {
+            return $this->badRequest($e->getMessage());
+        }
+
+        return [
+            'http_code' => 200,
+            'success' => true,
+            'session_token' => $session->getToken()
+        ];
     }
 
     public function signUpAction()
     {
-        $email     = $this->post['email'];
-        $password  = $this->post['password'];
+        $email = $this->post['email'];
+        $password = $this->post['password'];
         $firstName = $this->post['first_name'];
-        $lastName  = $this->post['last_name'];
+        $lastName = $this->post['last_name'];
         //Form Validation
         //create a new user
         //create a session token
@@ -34,7 +56,7 @@ class UsersController extends BaseController
         try {
             $this->emailValidation($email, $this->entityManager);
             $user->setEmail($email);
-            $user->setPassword($password);
+            $user->setPassword($this->hashPassword($password));
             $user->setFirstName($firstName);
             $user->setLastName($lastName);
 
@@ -71,5 +93,11 @@ class UsersController extends BaseController
         if (count($result) > 0) {
             throw new \Exception('Duplicated Email');
         }
+    }
+
+    protected function hashPassword(string $password)
+    {
+        $pwd_peppered = hash_hmac("sha256", $password, $_ENV['USER_PASSWORD_SECRET']);
+        return password_hash($pwd_peppered, PASSWORD_BCRYPT);
     }
 }
