@@ -26,3 +26,17 @@ if (!function_exists('dd')) {
 		new_dump( func_get_args() ); exit;
 	}
 }
+
+if (!function_exists('generateToken')) {
+    function generateToken()
+    {
+        return bin2hex(random_bytes(8) . time());
+    }
+}
+
+if (!function_exists('toDateTimeString')) {
+    function toDateTimeString(\DateTime $dateTime)
+    {
+        return $dateTime->format("Y-m-d H:i:s");
+    }
+}

@@ -1,6 +1,10 @@
 <?php
 namespace Controllers;
 
+use App\Entity\User;
+use App\Services\UserService;
+use Doctrine\ORM\EntityManager;
+
 class UsersController extends BaseController
 {
     // Session length = 30 minutes
@@ -22,7 +26,50 @@ class UsersController extends BaseController
         $password  = $this->post['password'];
         $firstName = $this->post['first_name'];
         $lastName  = $this->post['last_name'];
+        //Form Validation
+        //create a new user
+        //create a session token
+        $user = new User();
+        $service = new UserService();
+        try {
+            $this->emailValidation($email, $this->entityManager);
+            $user->setEmail($email);
+            $user->setPassword($password);
+            $user->setFirstName($firstName);
+            $user->setLastName($lastName);
 
-        // your code goes here
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
+
+            $session = $service->createNewSession($user);
+            $this->entityManager->persist($session);
+            $this->entityManager->flush();
+        } catch (\Exception $e) {
+            return $this->badRequest($e->getMessage());
+        }
+
+        return [
+            'http_code' => 200,
+            'success' => true,
+            'session_token' => $session->getToken()
+        ];
+    }
+
+    /**
+     * @param string $email
+     * @param EntityManager $entityManager
+     * @throws \Exception
+     */
+    protected function emailValidation(string $email, EntityManager $entityManager)
+    {
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new \Exception('Invalid Email');
+        }
+
+        $result = $entityManager->getRepository(User::class)->findBy(['email' => $email]);
+
+        if (count($result) > 0) {
+            throw new \Exception('Duplicated Email');
+        }
     }
 }

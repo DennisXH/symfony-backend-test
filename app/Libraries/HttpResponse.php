@@ -1,5 +1,5 @@
 <?php
-namespace Libraries;
+namespace App\Libraries;
 
 class HttpResponse
 {
