@@ -1,1 +1,0 @@
-C:37:"PHPUnit\Runner\DefaultTestResultCache":232:{a:2:{s:7:"defects";a:2:{s:32:"UserTest::testValidDBUserSession";i:4;s:34:"UserTest::testCreateNewUserSession";i:4;}s:5:"times";a:2:{s:32:"UserTest::testValidDBUserSession";d:0.076;s:34:"UserTest::testCreateNewUserSession";d:0.004;}}}

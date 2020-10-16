@@ -1,3 +1,19 @@
+#
+# PHP Dependencies
+#
+FROM composer:1.8 as vendor
+
+COPY ./composer.json ./
+COPY ./composer.lock ./
+
+RUN composer install \
+    --ignore-platform-reqs \
+    --no-interaction \
+    --no-plugins \
+    --no-scripts \
+    --no-autoloader \
+    --prefer-dist
+
 FROM php:7.4-fpm-alpine as new-base
 MAINTAINER Dennis Xie <dennisloveds@gmail.com>
 
@@ -27,5 +43,8 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 # Change current user to www
 USER www-data
 COPY --chown=www-data:www-data ./ /var/www/app
+COPY --chown=www-data:www-data --from=vendor /app/vendor/ /var/www/app/vendor/
+
 # Setup working directory
 WORKDIR /var/www/app
+RUN composer dump-autoload --optimize

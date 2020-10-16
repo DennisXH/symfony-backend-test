@@ -1,0 +1,9 @@
+vendor/
+node_modules/
+/bootstrap/cache/*
+.DS_Store
+storage/
+public/js/bower_components/
+public/js/lang/messages.min.js
+public/version.json
+.env

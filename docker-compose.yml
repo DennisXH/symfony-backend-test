@@ -1,10 +1,11 @@
 version: '3.5'
 services:
+  tool:
+    build: .
+    networks:
+      - app-network
   app:
     build: .
-    working_dir: /var/www/app
-#    volumes:
-#      - .:/var/www/app
     entrypoint: php -S 0.0.0.0:8000;
     ports:
       - "8000:8000"
